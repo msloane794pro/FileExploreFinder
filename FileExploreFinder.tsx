@@ -229,11 +229,15 @@ export const FileExploreFinder: React.FC<FileExploreFinderProps> = ({
       const downloadPath = selectedFile.download_path;
       const fileName = selectedFile.name;
 
-      console.log(`Initiating Download requested for: ${fileName} at ${downloadPath}`);
+      console.log(
+        `Initiating Download requested for: ${fileName} at ${downloadPath}`
+      );
 
       try {
-        const res = await authorizedFetch(`/api/download_file?file_name=${downloadPath}`);
-        
+        const res = await authorizedFetch(
+          `/api/download_file?file_name=${downloadPath}`
+        );
+
         if (!res.ok) {
           console.log(`Download API NOT successful for: ${downloadPath}`);
           console.log(`Response: ${res.status} - ${res.statusText}`);
@@ -253,7 +257,8 @@ export const FileExploreFinder: React.FC<FileExploreFinderProps> = ({
         window.URL.revokeObjectURL(url);
         console.log(`File download successfully: ${downloadPath}`);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
         alert(`Error: Download failed for "${downloadPath}"\n${errorMessage}`);
       } finally {
         setIsDownloading(false);
@@ -324,62 +329,60 @@ export const FileExploreFinder: React.FC<FileExploreFinderProps> = ({
                 </span>
               )}
             </div>
+          </div>
 
-            {/* Search Box and Download Button Group */}
+          {/* Search Box and Download Button Group */}
+          <div className="flex items-center space-x-2">
+            {/* Search Box */}
             <div className="flex items-center space-x-2">
-              {/* Search Box */}
-              <div className="flex items-center space-x-2">
-                <Search className="w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search files"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
-                />
-                <button
-                  onClick={handleClearSearch}
-                  disabled={searchQuery.length < 2}
-                  className={`flex items-center justify-center px-3 py-2 transition-colors ${
-                    searchQuery.length >= 2
-                      ? "cursor-pointer"
-                      : "cursor-not-allowed"
-                  }`}
-                  title="Clear search"
-                >
-                  <XSquare
-                    className={`w-5 h-5 ${
-                      searchQuery.length >= 2
-                        ? "text-blue-600"
-                        : "text-gray-400"
-                    }`}
-                  />
-                </button>
-              </div>
-
-              {/* Download Button */}
+              <Search className="w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search files"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+              />
               <button
-                onClick={handleDownload}
-                disabled={!selectedFile || isDownloading}
-                className={`flex items-center space-x-2 px-4 py-2 rounded ${
-                  selectedFile && !isDownloading
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                onClick={handleClearSearch}
+                disabled={searchQuery.length < 2}
+                className={`flex items-center justify-center px-3 py-2 transition-colors ${
+                  searchQuery.length >= 2
+                    ? "cursor-pointer"
+                    : "cursor-not-allowed"
                 }`}
+                title="Clear search"
               >
-                {isDownloading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Downloading...</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-5 h-5" />
-                    <span>Download</span>
-                  </>
-                )}
+                <XSquare
+                  className={`w-5 h-5 ${
+                    searchQuery.length >= 2 ? "text-blue-600" : "text-gray-400"
+                  }`}
+                />
               </button>
             </div>
+
+            {/* Download Button */}
+            <button
+              onClick={handleDownload}
+              disabled={!selectedFile || isDownloading}
+              className={`flex items-center space-x-2 px-4 py-2 rounded ${
+                selectedFile && !isDownloading
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              {isDownloading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Downloading...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-5 h-5" />
+                  <span>Download</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
 
